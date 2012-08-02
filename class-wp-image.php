@@ -16,6 +16,10 @@ class WP_Image {
 		$this->backup_sizes = get_post_meta( $post_id, '_wp_attachment_backup_sizes', true );
 	}
 
+	function get_metadata() {
+		return $this->meta;
+	}
+
 	function resize( $width, $height ) {
 
 	}
