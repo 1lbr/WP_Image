@@ -1,8 +1,10 @@
 <?php
 
 class WP_Image_Editor {
-	function __construct( $file ) {
+	private $file;
 
+	function __construct( $file ) {
+		$this->file = $file;
 	}
 
 	/**
@@ -35,16 +37,23 @@ class WP_Image_Editor {
 
 
 	function load( $file ) {
-		$editor = $this->get_first_available();
+		$editor = $this->get_first_available( 'load' );
 
-		if( $editor )
+		if( $editor ) {
+			$editor = new $editor;
 			return $editor->load( $file );
+		}
 
 		return false;
 	}
 
-	function resize() {
-		$editor = $this->get_first_available();
+	function resize( $max_w, $max_h, $crop = false, $suffix = null, $dest_path = null, $jpeg_quality = 90 ) {
+		$editor = $this->get_first_available( 'resize' );
+
+		if( $editor ) {
+			$editor = new $editor;
+			return $editor->resize( $this->file, $max_w, $max_h, $crop, $suffix, $dest_path, $jpeg_quality );
+		}
 	}
 
 	function rotate() {

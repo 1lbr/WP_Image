@@ -28,7 +28,7 @@ class WP_Image {
 		return $this->editor->load( $this->file );
 	}
 
-	function resize( $width, $height ) {
-
+	function resize( $max_w, $max_h, $crop = false, $suffix = null, $dest_path = null, $jpeg_quality = 90 ) {
+		return $this->resize->load( $max_w, $max_h, $crop, $suffix, $dest_path, $jpeg_quality );
 	}
 }
