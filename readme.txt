@@ -25,4 +25,7 @@ Also the current code is partly rewritten to make it easier to generate thumbnia
 
 == TODO's ==
 
-* A lot
+A lot but see here some ideas:
+
+* Add an auto_generate option to add_image_size() what is default true obvious
+* Implement the auto_generate option through out the code base

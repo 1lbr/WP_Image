@@ -24,7 +24,7 @@ class WP_Image_Editor {
 			if ( ! call_user_func( array( $class, 'test' ), $function  ) )
 				continue;
 
-			if( ! apply_filters( 'wp_editor_use_' . $editor, true, $function )
+			if( ! apply_filters( 'wp_editor_use_' . $editor, true, $function ) )
 				continue;
 
 			return $class;
@@ -42,6 +42,6 @@ class WP_Image_Editor {
 	}
 
 	function save() {
-		
+
 	}
 }

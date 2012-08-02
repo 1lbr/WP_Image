@@ -7,7 +7,7 @@ class WP_Image {
 	private $backup_sizes;
 
 	function __construct( $post_id ) {
-		if ( ! wp_attachment_is_image( $post_id ) ) )
+		if ( ! wp_attachment_is_image( $post_id ) )
 			return false;
 
 		$this->file         = get_attached_file( $post_id );

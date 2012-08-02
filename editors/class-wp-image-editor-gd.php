@@ -6,7 +6,7 @@ class WP_Image_Editor_GD {
 	}
 
 	function test( $function ) {
-		if ( ! extension_loaded('gd') || ! function_exists('gd_info') ) {
+		if ( ! extension_loaded('gd') || ! function_exists('gd_info') )
 			return false;
 
 		return true;
