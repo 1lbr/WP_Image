@@ -1,7 +1,7 @@
 <?php
 
 class WP_Image_Editor {
-	function __construct( $file_path ) {
+	function __construct( $file ) {
 
 	}
 
@@ -33,8 +33,18 @@ class WP_Image_Editor {
 		return false;
 	}
 
-	function resize() {
 
+	function load( $file ) {
+		$editor = $this->get_first_available();
+
+		if( $editor )
+			return $editor->load( $file );
+
+		return false;
+	}
+
+	function resize() {
+		$editor = $this->get_first_available();
 	}
 
 	function rotate() {

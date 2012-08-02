@@ -1,6 +1,8 @@
 <?php
 
 class WP_Image {
+	private $editor;
+
 	private $file;
 	private $url;
 	private $meta;
@@ -10,6 +12,8 @@ class WP_Image {
 		if ( ! wp_attachment_is_image( $post_id ) )
 			return false;
 
+		$this->editor       = new WP_Image_Editor();
+
 		$this->file         = get_attached_file( $post_id );
 		$this->url          = wp_get_attachment_url( $post_id );
 		$this->meta         = wp_get_attachment_metadata( $post_id );
@@ -18,6 +22,10 @@ class WP_Image {
 
 	function get_metadata() {
 		return $this->meta;
+	}
+
+	function load() {
+		return $this->editor->load( $this->file );
 	}
 
 	function resize( $width, $height ) {
