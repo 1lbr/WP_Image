@@ -32,6 +32,7 @@ class WP_Image_Editor_Imagemagick {
 			return new WP_Error( 'error_loading_image', $image, $file );
 
 		$imageprops = $image->getImageGeometry();
+		$orig_type  = $image->getImageFormat();
 		if ( ! $imageprops )
 			return new WP_Error( 'invalid_image', __('Could not read image size'), $file );
 
@@ -41,11 +42,16 @@ class WP_Image_Editor_Imagemagick {
 		list( $dst_x, $dst_y, $src_x, $src_y, $dst_w, $dst_h, $src_w, $src_h ) = $dims;
 
 
+		if( 'JPEG' == $orig_type ) {
+			$image->setImageCompression( imagick::COMPRESSION_JPEG );
+			$image->setImageCompressionQuality( $jpeg_quality );
+		}
+
 		if ( $crop ) {
-			$image->cropThumbnailImage( $dst_w, $src_h );
+			$image->cropThumbnailImage( $dst_w, $dst_h );
 		}
 		else {
-			$image->thumbnailImage( $dst_w, $src_h, TRUE );
+			$image->thumbnailImage( $dst_w, $dst_h, TRUE );
 		}
 
 		// $suffix will be appended to the destination filename, just before the extension
@@ -61,6 +67,7 @@ class WP_Image_Editor_Imagemagick {
 			$dir = $_dest_path;
 		$destfilename = "{$dir}/{$name}-{$suffix}.{$ext}";
 
+		$image->stripImage();
 		$image->writeImage( $destfilename );
 
 		// Set correct file permissions
