@@ -51,7 +51,7 @@ class WP_Image_Editor_Imagemagick {
 			$image->cropThumbnailImage( $dst_w, $dst_h );
 		}
 		else {
-			$image->thumbnailImage( $dst_w, $dst_h, TRUE );
+			$image->thumbnailImage( $dst_w, $dst_h );
 		}
 
 		// $suffix will be appended to the destination filename, just before the extension
