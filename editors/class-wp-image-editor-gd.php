@@ -10,7 +10,7 @@ class WP_Image_Editor_GD {
 	function __destruct() {
 		if ( $this->image ) {
 			// we don't need the original in memory anymore
-			imagedestroy( $image );
+			imagedestroy( $this->image );
 		}
 	}
 
