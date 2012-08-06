@@ -1,8 +1,17 @@
 <?php
 
 class WP_Image_Editor_GD {
+	private $image = false;
+
 	function __construct() {
 
+	}
+
+	function __destruct() {
+		if ( $this->image ) {
+			// we don't need the original in memory anymore
+			imagedestroy( $image );
+		}
 	}
 
 	public static function test( $function ) {
@@ -13,6 +22,9 @@ class WP_Image_Editor_GD {
 	}
 
 	public function load( $file ) {
+		if( $this->image ) 
+			$this->image;
+
 		if ( ! file_exists( $file ) )
 			return sprintf( __('File &#8220;%s&#8221; doesn&#8217;t exist?'), $file );
 
@@ -26,6 +38,7 @@ class WP_Image_Editor_GD {
 		if ( ! is_resource( $image ) )
 			return sprintf( __('File &#8220;%s&#8221; is not an image.'), $file );
 
+		$this->image = $image;
 		return $image;
 	}
 
@@ -52,9 +65,6 @@ class WP_Image_Editor_GD {
 		// convert from full colors to index colors, like original PNG.
 		if ( IMAGETYPE_PNG == $orig_type && function_exists('imageistruecolor') && !imageistruecolor( $image ) )
 			imagetruecolortopalette( $newimage, false, imagecolorstotal( $image ) );
-
-		// we don't need the original in memory anymore
-		imagedestroy( $image );
 
 		// $suffix will be appended to the destination filename, just before the extension
 		if ( ! $suffix )
@@ -93,6 +103,11 @@ class WP_Image_Editor_GD {
 		$perms = $stat['mode'] & 0000666; //same permissions as parent folder, strip off the executable bits
 		@ chmod( $destfilename, $perms );
 
-		return $destfilename;
+		return array(
+			'path' => $destfilename,
+			'file' => wp_basename(  apply_filters( 'image_make_intermediate_size', $destfilename ) ),
+			'width' => $dst_w,
+			'height' => $dst_h
+		);
 	}
 }

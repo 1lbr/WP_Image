@@ -75,6 +75,11 @@ class WP_Image_Editor_Imagemagick {
 		$perms = $stat['mode'] & 0000666; //same permissions as parent folder, strip off the executable bits
 		@ chmod( $destfilename, $perms );
 
-		return $destfilename;
+		return array(
+			'path' => $destfilename,
+			'file' => wp_basename(  apply_filters( 'image_make_intermediate_size', $destfilename ) ),
+			'width' => $dst_w,
+			'height' => $dst_h
+		);
 	}
 }
