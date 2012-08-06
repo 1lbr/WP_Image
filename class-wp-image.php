@@ -12,8 +12,6 @@ class WP_Image {
 		if ( ! wp_attachment_is_image( $post_id ) )
 			return false;
 
-		$this->editor       = new WP_Image_Editor();
-
 		$this->file         = get_attached_file( $post_id );
 		$this->url          = wp_get_attachment_url( $post_id );
 		$this->meta         = wp_get_attachment_metadata( $post_id );
@@ -28,7 +26,12 @@ class WP_Image {
 		return $this->editor->load( $this->file );
 	}
 
-	function resize( $max_w, $max_h, $crop = false, $suffix = null, $dest_path = null, $jpeg_quality = 90 ) {
-		return $this->resize->load( $max_w, $max_h, $crop, $suffix, $dest_path, $jpeg_quality );
+	private function editor() {
+		if( $this->editor )
+			return $this->editor;
+
+		$this->editor = new WP_Image_Editor( $this->url );
+
+		return $this->editor;
 	}
 }
