@@ -74,7 +74,7 @@ class WP_Image_Editor_Imagick {
 			$dir = $_dest_path;
 		$destfilename = "{$dir}/{$name}-{$suffix}.{$ext}";
 
-		if( apply_filter( 'wp_editors_stripimage', true ) ) {
+		if( apply_filters( 'wp_editors_stripimage', true ) ) {
 			$image->stripImage();
 		}
 
