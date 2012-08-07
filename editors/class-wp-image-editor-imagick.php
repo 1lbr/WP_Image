@@ -1,6 +1,6 @@
 <?php
 
-class WP_Image_Editor_Imagemagick {
+class WP_Image_Editor_Imagick {
 	function __construct() {
 
 	}

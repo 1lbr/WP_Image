@@ -18,7 +18,7 @@ include 'class-wp-image-editor.php';
 include 'image.php';
 
 include 'editors/class-wp-image-editor-gd.php';
-include 'editors/class-wp-image-editor-imagemagick.php';
+include 'editors/class-wp-image-editor-imagick.php';
 
 class WP_Image_Testsuite {
 	function __construct() {

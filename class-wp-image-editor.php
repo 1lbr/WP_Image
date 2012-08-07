@@ -16,7 +16,7 @@ class WP_Image_Editor {
 	 * @return string|bool Class name for the first editor that claims to support the request. False if no editor claims to support the request.
 	 */
 	private function get_first_available( $function ) {
-		$request_order = apply_filters( 'wp_editors', array( 'imagemagick', 'gd' ) );
+		$request_order = apply_filters( 'wp_editors', array( 'imagick', 'gd' ) );
 
 		// Loop over each editor on each request looking for one which will serve this request's needs
 		foreach ( $request_order as $editor ) {
