@@ -23,6 +23,10 @@ class WP_Image_Editor_Imagemagick {
 			return sprintf(__('File &#8220;%s&#8221; is not an image.'), $file);
 		}
 
+		if( ! $image->valid() ) {
+			return sprintf(__('File &#8220;%s&#8221; is not an image.'), $file);
+		}
+
 		return $image;
 	}
 
@@ -41,17 +45,20 @@ class WP_Image_Editor_Imagemagick {
 			return new WP_Error( 'error_getting_dimensions', __('Could not calculate resized image dimensions') );
 		list( $dst_x, $dst_y, $src_x, $src_y, $dst_w, $dst_h, $src_w, $src_h ) = $dims;
 
-
 		if( 'JPEG' == $orig_type ) {
 			$image->setImageCompression( imagick::COMPRESSION_JPEG );
 			$image->setImageCompressionQuality( $jpeg_quality );
 		}
 
 		if ( $crop ) {
-			$image->cropThumbnailImage( $dst_w, $dst_h );
+			$image->cropImage( $src_w, $src_h, $src_x, $src_y );
+
+			$image->scaleImage( $dst_w, $dst_h, true );
+			//$image->resizeImage( $dst_w, $dst_h, imagick::FILTER_LANCZOS, 1 );
 		}
 		else {
-			$image->thumbnailImage( $dst_w, $dst_h );
+			//$image->thumbnailImage( $dst_w, $dst_h );
+			$image->scaleImage( $dst_w, $dst_h, true );
 		}
 
 		// $suffix will be appended to the destination filename, just before the extension
