@@ -2,6 +2,7 @@
 
 class WP_Image_Editor {
 	private $file;
+	private $editors;
 
 	function __construct( $file ) {
 		$this->file = $file;
@@ -29,7 +30,10 @@ class WP_Image_Editor {
 			if( ! apply_filters( 'wp_editor_use_' . $editor, true, $function ) )
 				continue;
 
-			return $class;
+			if( ! $this->editors[ $class ] ) 
+				$this->editors[ $class ] = new $class;
+
+			return $this->editors[ $class ];
 		}
 
 		return false;
@@ -40,7 +44,6 @@ class WP_Image_Editor {
 		$editor = $this->get_first_available( 'load' );
 
 		if( $editor ) {
-			$editor = new $editor;
 			return $editor->load( $file );
 		}
 
@@ -51,7 +54,6 @@ class WP_Image_Editor {
 		$editor = $this->get_first_available( 'resize' );
 
 		if( $editor ) {
-			$editor = new $editor;
 			return $editor->resize( $this->file, $max_w, $max_h, $crop, $suffix, $dest_path, $jpeg_quality );
 		}
 	}
