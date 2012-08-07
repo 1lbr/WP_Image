@@ -74,7 +74,10 @@ class WP_Image_Editor_Imagemagick {
 			$dir = $_dest_path;
 		$destfilename = "{$dir}/{$name}-{$suffix}.{$ext}";
 
-		$image->stripImage();
+		if( apply_filter( 'wp_editors_stripimage', true ) ) {
+			$image->stripImage();
+		}
+
 		$image->writeImage( $destfilename );
 
 		// Set correct file permissions
