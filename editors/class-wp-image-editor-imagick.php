@@ -52,14 +52,10 @@ class WP_Image_Editor_Imagick {
 
 		if ( $crop ) {
 			$image->cropImage( $src_w, $src_h, $src_x, $src_y );
+		}
 
-			$image->scaleImage( $dst_w, $dst_h, true );
-			//$image->resizeImage( $dst_w, $dst_h, imagick::FILTER_LANCZOS, 1 );
-		}
-		else {
-			//$image->thumbnailImage( $dst_w, $dst_h );
-			$image->scaleImage( $dst_w, $dst_h, true );
-		}
+		//$image->thumbnailImage( $dst_w, $dst_h );
+		$image->scaleImage( $dst_w, $dst_h, true );
 
 		// $suffix will be appended to the destination filename, just before the extension
 		if ( ! $suffix )
