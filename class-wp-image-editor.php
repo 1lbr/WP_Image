@@ -39,17 +39,6 @@ class WP_Image_Editor {
 		return false;
 	}
 
-
-	function load( $file ) {
-		$editor = $this->get_first_available( 'load' );
-
-		if( $editor ) {
-			return $editor->load( $file );
-		}
-
-		return false;
-	}
-
 	function resize( $max_w, $max_h, $crop = false, $suffix = null, $dest_path = null, $jpeg_quality = 90 ) {
 		$editor = $this->get_first_available( 'resize' );
 
