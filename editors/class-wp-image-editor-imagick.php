@@ -2,10 +2,17 @@
 
 class WP_Image_Editor_Imagick {
 	function __construct() {
-
 	}
 
-	public static function test( $function ) {
+	// if both tests fall, use GD or Warning the user...
+	public static function test_system_call(){
+		if ( false !== strpos(ini_get("disable_functions"), "exec") )
+        	return false;
+    
+		return true;
+	}
+
+	public static function test_extension( $function ) {
 		if ( ! extension_loaded('imagick') )
 			return false;
 
@@ -30,8 +37,9 @@ class WP_Image_Editor_Imagick {
 		return $image;
 	}
 
-	public function resize( $file, $max_w, $max_h, $crop = false, $suffix = null, $dest_path = null, $jpeg_quality = 90 ) {
+	public function resize( $file, $opts ) {
 		$image = $this->load( $file );
+
 		if ( ! is_object( $image ) )
 			return new WP_Error( 'error_loading_image', $image, $file );
 

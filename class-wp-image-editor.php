@@ -2,49 +2,40 @@
 
 class WP_Image_Editor {
 	private $file;
-	private $editors;
+	private $editor;
 
 	function __construct( $file ) {
 		$this->file = $file;
+
+		$config = get_option('image_engine_opts');
+
+		$this->opts = array(
+			"max_width" => 		$config->max_width || 300,
+			"max_height" => 	$config->max_height || 300,
+			"crop" => 			$config->crop || false,
+			"suffix" => 		$config->suffix || null,
+			"path" => 			$config->path || null,
+			"quality" => 		$config->quality || 90
+		);
 	}
 
 	/**
-	 * Tests which editors are capable of supporting the request.
+	 * check which engine will be used, must be optional
 	 *
 	 * @since 3.5.0
 	 * @access private
 	 *
-	 * @return string|bool Class name for the first editor that claims to support the request. False if no editor claims to support the request.
+	 * @return string Engine (GD/ImageMagick/GraphicsMagick)
 	 */
-	private function get_first_available( $function ) {
-		$request_order = apply_filters( 'wp_editors', array( 'imagick', 'gd' ) );
+	private function get_engine() {
+		$class = 'WP_Image_Editor_' . get_option('image_engine', 'GD');
 
-		// Loop over each editor on each request looking for one which will serve this request's needs
-		foreach ( $request_order as $editor ) {
-			$class = 'WP_Image_Editor_' . $editor;
-
-			// Check to see if this editor is a possibility, calls the editor statically
-			if ( ! call_user_func( array( $class, 'test' ), $function  ) )
-				continue;
-
-			if( ! apply_filters( 'wp_editor_use_' . $editor, true, $function ) )
-				continue;
-
-			if( ! $this->editors[ $class ] ) 
-				$this->editors[ $class ] = new $class;
-
-			return $this->editors[ $class ];
-		}
-
-		return false;
+		return $this->editors[ $class ];
 	}
 
-	function resize( $max_w, $max_h, $crop = false, $suffix = null, $dest_path = null, $jpeg_quality = 90 ) {
-		$editor = $this->get_first_available( 'resize' );
-
-		if( $editor ) {
-			return $editor->resize( $this->file, $max_w, $max_h, $crop, $suffix, $dest_path, $jpeg_quality );
-		}
+	function resize() {
+		$editor = $this->get_engine();
+		return $editor->resize( $this->file, $this->opts );
 	}
 
 	function rotate() {
